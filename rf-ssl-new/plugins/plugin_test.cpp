@@ -796,7 +796,7 @@ void imageClust::regions()
     int cols=src.cols;
 
     Run curr;
-    Region * regions=reglist.regions;
+    WRegion * regions=reglist.regions;
     Run * runs=rlist.runs;
     int used=rlist.used;
     int n=0;
@@ -839,7 +839,7 @@ void imageClust::regions()
     reglist.used=n;
     printf("regions1: %d\n",n);
 
-    Region * r=new Region[100];
+    WRegion * r=new WRegion[100];
     int count=0;
     for (int i=0;i<n;++i)
     {
@@ -858,7 +858,7 @@ void imageClust::regions()
 
     printf("regions2: %d\n",n);
     n=reglist.used;
-    Region * final_r=new Region[n];
+    WRegion * final_r=new WRegion[n];
 
     count =0;
     for (int i=0;i<n;++i)
@@ -921,7 +921,7 @@ void imageClust::recover(Mat &src)
     uchar * mat=src.data;
     Run curr;
     Run * r=rlist.runs;
-    Region * reg=reglist.regions;
+    WRegion * reg=reglist.regions;
 
     int cols=src.cols;
     int parent;
@@ -963,8 +963,8 @@ void imageClust::colors()
 {
 
     Run * runs=rlist.runs;
-    Region * regs=reglist.regions;
-    Region curr_reg;
+    WRegion * regs=reglist.regions;
+    WRegion curr_reg;
     int n=reglist.used;
     int res_col;
     double min=6;
@@ -1034,12 +1034,12 @@ void imageClust::readCovs()
     }
 }
 
-bool regionCompare (Region i,Region j) { return (i.angle<j.angle); }
+bool regionCompare (WRegion i, WRegion j) { return (i.angle<j.angle); }
 
 void imageClust::invar(Hat &h)
 {
    // printf("inver starting\n");
-    Region regs[5];
+    WRegion regs[5];
 
     for (int i=0;i<5;++i)
     {
@@ -1192,7 +1192,7 @@ void imageClust::findHats()
 
 
     int n=reglist.used;
-    Region * regs=reglist.regions;
+    WRegion * regs=reglist.regions;
     //Run * runs=rlist.runs;
     double dist;
     int count=0;
@@ -1298,7 +1298,7 @@ void imageClust::calibrate()
         int src_cols=src.cols;
         uchar * mat=src.data;
 
-        Region * regs=reglist.regions;
+        WRegion * regs=reglist.regions;
         Run * runs=rlist.runs;
 
         int n=reglist.used;

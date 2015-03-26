@@ -59,7 +59,7 @@ RawImage CaptureOpenCv::getFrame()
         result.setWidth(width);
         result.setHeight(height);
 
-        tval tv;
+        timeval tv;
         gettimeofday(&tv,NULL);
         result.setTime((double)tv.tv_sec + tv.tv_usec*(1.0E-6));
     }

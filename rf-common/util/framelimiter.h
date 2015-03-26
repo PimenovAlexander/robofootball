@@ -11,7 +11,12 @@
 #define FRAMELIMITER_H
 #include "timer.h"
 #include <stdio.h>
+
+#ifdef WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 class FrameLimiter{
 private:
@@ -50,8 +55,12 @@ public:
     //Compensate for any previous sluggish Frames:
       if (TLastOverShoot > 0 && TLastOverShoot < diff) diff-=TLastOverShoot;
       if (diff > waiting) diff=waiting;
-      //usleep((unsigned long)(diff*1.0E6));
+
+#ifdef UNIX
+      usleep((unsigned long)(diff*1.0E6));
+#else
       Sleep(diff*1.0E3);
+#endif
     }
     TLastDraw=timer.midtime();
     TLastOverShoot=(TLastDraw-curtime)-diff;

@@ -1,11 +1,16 @@
 #include <sys/types.h>
-//#include <sys/socket.h>
-//#include <sys/poll.h>
 
 #include <stdio.h>
-//#include <netdb.h>
-//#include <unistd.h>
-//#include <fcntl.h>
+
+#ifdef UNIX
+#include <sys/socket.h>
+#include <sys/poll.h>
+#include <sys/ioctl.h>
+
+#include <netdb.h>
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 
 #include "util.h"
 
@@ -83,11 +88,13 @@ void Address::print(FILE *out) const
 UDP::UDP()
 {
   // Initialize Winsock
+#ifdef WIN32
   int iResult;
   WSADATA wsaData;
   iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
   if (iResult != 0)
     printf("WSAStartup failed: %d\n", iResult);
+#endif
 
   fd = -1;
   close();
@@ -96,18 +103,31 @@ UDP::UDP()
 UDP::~UDP()
 {
   close();
+#ifdef WIN32
   WSACleanup();
+#endif
 }
 
 bool UDP::open(int port, bool share_port_for_multicasting, bool multicast_include_localhost, bool blocking)
 {
   // open the socket
-  if(fd >= 0) closesocket(fd);
+  if(fd >= 0) {
+#ifdef WIN32
+      closesocket(fd);
+#else
+      ::close(fd);
+#endif
+  }
   fd = socket(PF_INET, SOCK_DGRAM, 0);
 
   // set socket as non-blocking
 	u_long iMode = blocking ? 0 : 1;
+
+#ifdef WIN32
   ioctlsocket(fd, FIONBIO, &iMode);
+#else
+  ioctl(fd, FIONBIO, &iMode);
+#endif
 
   if (share_port_for_multicasting) {
     int reuse=1;
@@ -183,7 +203,13 @@ bool UDP::addMulticast(const Address &multiaddr,const Address &interface)
 
 void UDP::close()
 {
-  if(fd >= 0) closesocket(fd);
+  if(fd >= 0) {
+#ifdef WIN32
+      closesocket(fd);
+#else
+      ::close(fd);
+#endif
+  }
   fd = -1;
 
   sent_packets = 0;
@@ -207,7 +233,7 @@ bool UDP::send(const void *data,int length,const Address &dest)
 int UDP::recv(void *data,int length,Address &src)
 {
   src.addr_len = sizeof(src.addr);
-  int len = recvfrom(fd,(char*)data,length,0,&src.addr,(int*)&src.addr_len);
+  int len = recvfrom(fd,(char*)data,length,0,&src.addr,(socklen_t*)&src.addr_len);
 
   if(len > 0){
     recv_packets++;

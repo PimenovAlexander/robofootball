@@ -1,20 +1,26 @@
 #ifndef _INCLUDED_NETRAW_H_
 #define _INCLUDED_NETRAW_H_
 
+#if WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#endif
 
 #include <sys/types.h>
-//#include <sys/socket.h>
-//#include <netinet/in.h>
-//#include <arpa/inet.h>
+#ifdef UNIX
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif
 
 #include <stdio.h>
 #include <string.h>
 
 namespace Net{
 
+#ifdef WIN32
 typedef ULONG in_addr_t;
+#endif
 
 //====================================================================//
 //  Net::Address: Network address class

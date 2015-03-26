@@ -20,10 +20,10 @@
 //========================================================================
 #ifndef GLLUTWIDGET_H_
 #define GLLUTWIDGET_H_
-#include <QtOpenGL><
+#include <QtOpenGL>
 #include <QGLWidget>
-#include <gl/glu.h>
-#include <gl/gl.h>
+#include <GL/glu.h>
+#include <GL/gl.h>
 #include <QTime>
 #include <QMutex>
 #include <QWheelEvent>

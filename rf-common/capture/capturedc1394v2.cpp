@@ -1646,7 +1646,7 @@ RawImage CaptureDC1394v2::getFrame()
   result.setWidth(width);
   result.setHeight(height);
   //result.size= RawImage::computeImageSize(format, width*height);
-  tval tv;
+  timeval tv;
   result.setTime(0.0);
 
   if (dc1394_capture_dequeue(camera, DC1394_CAPTURE_POLICY_WAIT, &frame)!=DC1394_SUCCESS) {

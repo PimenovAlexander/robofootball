@@ -34,7 +34,11 @@
 #include <iostream>
 #include "gvector.h"
 #include <float.h>
+
+#ifdef WIN32
 #define isnan(x) _isnan(x)
+#endif
+
 #ifndef QUATERNION_H
 #define QUATERNION_H
 #ifndef PIOVER180

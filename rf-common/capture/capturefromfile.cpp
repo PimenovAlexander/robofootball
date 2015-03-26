@@ -252,7 +252,7 @@ RawImage CaptureFromFile::getFrame()
     result.setWidth(width);
     result.setHeight(height);
     result.setData(frame);
-    tval tv;    
+    timeval tv;
     gettimeofday(&tv,0);
     result.setTime((double)tv.tv_sec + tv.tv_usec*(1.0E-6));
   }

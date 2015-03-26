@@ -15,12 +15,15 @@ UI_DIR = ../build/rf-ssl/ui
 #where to place intermediate resource files
 RCC_DIR = ../build/rf-ssl/resources
 
-#where to place LIBS
-LIB_DIR = d:/Work/robofootball/lib
+win32 {
+  #where to place LIBS
+  LIB_DIR = d:/Work/robofootball/lib
+}
 
 unix {
   #add libeigen include path
   INCLUDEPATH += /usr/include/eigen2
+  #INCLUDEPATH += ../inc/
 
   #add libdc1394
   LIBS += -ldc1394
@@ -30,6 +33,10 @@ unix {
 
   #add opengl support
   LIBS += -lGL -lGLU
+
+    LIBS += -lopencv_highgui -lopencv_video -lopencv_core -lopencv_flann -lopencv_imgproc -lopencv_calib3d -lopencv_features2d -lopencv_objdetect # for opencv 2.3+
+    LIBS += -lopencv_nonfree
+
 }
 
 win32 {

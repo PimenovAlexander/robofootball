@@ -32,7 +32,11 @@
   #define M_PI_HALF 1.570796326794896619231321691639751442098584699687552910487472296154
 #endif
 #include <float.h>
+
+#ifdef WIN32
 #define isnan(x) _isnan(x)
+#endif
+
 /*!
   \class  GLCamera
   \author Stefan Zickler

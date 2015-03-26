@@ -30,10 +30,11 @@
 #include <stdint.h>
 #include <stdio.h>
 
-//#include <sys/time.h>
+#include <sys/time.h>
 #include <time.h>
-#include <windows.h>
+//#include <windows.h>
 
+#ifdef WIN32
 struct tval {
   long    tv_sec;         // seconds
   long    tv_usec;        // and microseconds
@@ -42,7 +43,7 @@ struct tval {
 inline int gettimeofday(struct tval* tp, void* tzp)
 {
   tzp;
-  __int64 freq,cnt;
+  __int64 freq, cnt;
   QueryPerformanceFrequency( (LARGE_INTEGER *) &freq );
   QueryPerformanceCounter( (LARGE_INTEGER *) &cnt );
   tp->tv_sec = (long)((double)cnt/freq);
@@ -50,6 +51,7 @@ inline int gettimeofday(struct tval* tp, void* tzp)
   /* 0 indicates that the call succeeded. */
   return 0;
 }
+#endif
 
 /*!
   \class Timer
@@ -57,7 +59,7 @@ inline int gettimeofday(struct tval* tp, void* tzp)
   \author  James R. Bruce, (C) 1999-2002
 */
 class Timer{
-  tval tv1,tv2;
+  timeval tv1,tv2;
 public:
   void start()  {gettimeofday(&tv1,NULL);}
   void stop()   {gettimeofday(&tv2,NULL);}
@@ -75,7 +77,7 @@ public:
     return(t);
   }
   double midtime() {
-    tval tmp;
+    timeval tmp;
     gettimeofday(&tmp,NULL);
     return((tmp.tv_sec - tv1.tv_sec) +
                         (tmp.tv_usec - tv1.tv_usec) * 1.0E-6);
@@ -167,7 +169,7 @@ inline unsigned GetTimeUSec()
   GetSystemTime(&time);
   return(time.seconds*1000000 + time.useconds);
 #else
-  tval tv;
+  timeval tv;
   gettimeofday(&tv,NULL);
   return(tv.tv_sec*1000000 + tv.tv_usec);
 #endif
@@ -180,7 +182,7 @@ inline double GetTimeSec()
   GetSystemTime(&time);
   return((double)time.seconds + time.useconds*(1.0E-6));
 #else
-  tval tv;
+  timeval tv;
   gettimeofday(&tv,NULL);
   return((double)tv.tv_sec + tv.tv_usec*(1.0E-6));
 #endif

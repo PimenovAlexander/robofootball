@@ -151,7 +151,7 @@ class RunList
 
 };
 
-class Region
+class WRegion
 {
 	public:
 		int first_run;
@@ -162,7 +162,7 @@ class Region
 		int color;
 
 		
-	Region()
+    WRegion()
 	{
 		ix=0;
 		iy=0;
@@ -176,17 +176,17 @@ class Region
 class RegionList
 {
 	public:
-		Region * regions;
+        WRegion * regions;
 		int used;
                 void init()
                 {
                     delete[] regions;
-                    regions=new Region[MAX_REGIONS];
+                    regions=new WRegion[MAX_REGIONS];
                     used=0;
                 }
 		RegionList()
 		{
-			regions=new Region[MAX_REGIONS];
+            regions=new WRegion[MAX_REGIONS];
 			used=0;
 		}
 		~RegionList()
@@ -198,14 +198,14 @@ class RegionList
 class Hat
 {
 public:
-	Region regs[5];
+    WRegion regs[5];
         int id;
 	int color;
 	double x,y;
         double phi;
         int used;
         Hat(){x=0;y=0;phi=0;used=0;id=-1;}
-        void add(Region reg)
+        void add(WRegion reg)
         {
                 regs[used++]=reg;
                 //printf("used: %d\n",used);
