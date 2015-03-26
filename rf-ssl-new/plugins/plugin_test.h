@@ -326,10 +326,6 @@ public:
     Scalar color;
     bool exists;
 
-    BallFeatures(Ball initialBall);
-
-    BallFeatures(Ball initialBall, uchar* mat, int width);
-
     BallFeatures(double b_x, double b_y, Scalar b_color): x(b_x), y(b_y), color(b_color), exists(true) {}
 
     BallFeatures() {exists = false; x = 0; y = 0; color = Scalar(0, 0, 0);}
@@ -355,8 +351,9 @@ public:
     void getNewData(std::deque<RobotFeatures> *blueTeam, std::deque<RobotFeatures> *yellowTeam, BallFeatures *ballData, ImageInterface *source);
     inline bool colorsAreNear(uchar* mat, int currentElement, Scalar color2);
     inline bool colorsAreNear(uchar* mat, int currentElement, deque<Scalar> color2);
+    inline bool imageProcessing::colorsAreNear(rgb* source_pointer, int currentElement, deque<Scalar> color2);
     inline bool isBoardOfRegion(uchar* mat, int i, int j, int width, Scalar color2);
-    void calibrate(ImageInterface* source, deque<Scalar> blue, deque<Scalar> yellow, deque<Scalar> pink, deque<Scalar> green, deque<Scalar> orange);
+    void calibrate(bool isFirstAlgorithm, ImageInterface* source, deque<Scalar> blue, deque<Scalar> yellow, deque<Scalar> pink, deque<Scalar> green, deque<Scalar> orange);
     void getStartData(ImageInterface* source, deque<Scalar> blue, deque<Scalar> yellow, deque<Scalar> pink, deque<Scalar> green, deque<Scalar> orange, int left, int top, int right, int bottom);
     ~imageProcessing();
 };
