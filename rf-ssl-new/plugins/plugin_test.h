@@ -11,6 +11,7 @@
 #include <fstream>
 #include <deque>
 #include <cmath>
+#include <omp.h>
 
 #include <visionplugin.h>
 #include "cmvision_region.h"
@@ -226,6 +227,22 @@ class Color
                         bgr[used][2]=color[2];
                         ++used;
                 }
+
+                Mat getAverageVector()
+                {
+                    Mat result = Mat::zeros(1,3,CV_64F);
+                    for (int i = 0; i < used; i++)
+                    {
+                        result.at<double>(0,0) += bgr[i][0];
+                        result.at<double>(0,1) += bgr[i][1];
+                        result.at<double>(0,2) += bgr[i][2];
+                    }
+                    result.at<double>(0,0) /= used;
+                    result.at<double>(0,1) /= used;
+                    result.at<double>(0,2) /= used;
+
+                    return result;
+                }
 };
 
 //Struct Ball был вынесен наружу из ImageClust, чтобы быть видимым для конструктора BallFeatures
@@ -348,13 +365,14 @@ private:
 public:   
     double threshold;
     imageProcessing(int radiusOfVotingForCentralCircle, int radiusOfVotingForSideCircles, int radiusOfRobotSector, int radiusOfBallSector);
-    void getNewData(std::deque<RobotFeatures> *blueTeam, std::deque<RobotFeatures> *yellowTeam, BallFeatures *ballData, ImageInterface *source);
+    //void getNewData(std::deque<RobotFeatures> *blueTeam, std::deque<RobotFeatures> *yellowTeam, BallFeatures *ballData, ImageInterface *source);
     inline bool colorsAreNear(uchar* mat, int currentElement, Scalar color2);
     inline bool colorsAreNear(uchar* mat, int currentElement, deque<Scalar> color2);
+    inline bool colorsAreNear(rgb* source_pointer, int currentElement, Color color2);
     inline bool imageProcessing::colorsAreNear(rgb* source_pointer, int currentElement, deque<Scalar> color2);
     inline bool isBoardOfRegion(uchar* mat, int i, int j, int width, Scalar color2);
-    void calibrate(bool isFirstAlgorithm, ImageInterface* source, deque<Scalar> blue, deque<Scalar> yellow, deque<Scalar> pink, deque<Scalar> green, deque<Scalar> orange);
-    void getStartData(ImageInterface* source, deque<Scalar> blue, deque<Scalar> yellow, deque<Scalar> pink, deque<Scalar> green, deque<Scalar> orange, int left, int top, int right, int bottom);
+    void calibrate(bool isFirstAlgorithm, ImageInterface* source, Color* colors);
+    void getStartData(ImageInterface* source, Mat* covs, Mat* cols, bool* mask, int left, int top, int right, int bottom);
     ~imageProcessing();
 };
 
@@ -395,11 +413,10 @@ public:
   int max_balls;
   ImageInterface * source;
 
-  deque<Scalar> blue;
-  deque<Scalar> yellow;
-  deque<Scalar> pink;
-  deque<Scalar> green;
-  deque<Scalar> orange;
+  Color colorsForObjects[5];
+  Mat cols[5];
+  Mat covs[5];
+  bool mask[5];
 
   int setColor;
   int numberOfCountedPoints;

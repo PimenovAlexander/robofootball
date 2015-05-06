@@ -102,7 +102,11 @@ SOURCES += \
   $${SHARED_DIR}/vartypes/primitives/VarBool.cpp \
   $${SHARED_DIR}/vartypes/primitives/VarBlob.cpp \
   $${SHARED_DIR}/vartypes/xml/xmlParser.cpp \
-    plugins/plugin_test.cpp
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_detection.pb.cc \
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_geometry.pb.cc \
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_refbox_log.pb.cc \
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_wrapper.pb.cc \
+  plugins/plugin_test.cpp
 
 HEADERS += \
   videostats.h \
@@ -214,7 +218,11 @@ HEADERS += \
   $${SHARED_DIR}/vartypes/primitives/VarBool.h \
   $${SHARED_DIR}/vartypes/primitives/VarBlob.h \
   $${SHARED_DIR}/vartypes/xml/xmlParser.h \
-    plugins/plugin_test.h
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_detection.pb.h \
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_geometry.pb.h \
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_refbox_log.pb.h \
+  $${SHARED_DIR}/proto/cpp/messages_robocup_ssl_wrapper.pb.h \
+  plugins/plugin_test.h
 
 FORMS += \
   gui/videowidget.ui \

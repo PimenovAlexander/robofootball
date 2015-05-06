@@ -59,7 +59,7 @@ win32 {
 #protobuf
 #include( $${SHARED_DIR}/proto/proto.pro.inc )
 #include( D:/RF/sslvision_win32_r188/src/shared/proto/proto.pro.inc )
-include( rf-common/proto/proto.pro.inc )
+include(rf-common/proto/proto.pro.inc )
 #include( C:/Robofootball/prog/rf-client/rf-common/proto/proto.pro.inc )
 
 OTHER_FILES +=
