@@ -52,9 +52,11 @@ namespace VarTypes {
       }
       unlock();
       return false;
-    };
+    }
   
-    VarIntVal(int default_val=0) : VarVal()
+    VarIntVal(int default_val=0) :
+        VarVal(),
+        _val(0)
     {
       setInt(default_val);
       changed();
@@ -76,7 +78,7 @@ namespace VarTypes {
     }
 
   
-    virtual VarTypeId getType() const { return VARTYPE_ID_INT; };
+    virtual VarTypeId getType() const { return VARTYPE_ID_INT; }
   
     virtual string getString() const
     {
@@ -86,15 +88,15 @@ namespace VarTypes {
       return result;
     };
   
-    virtual int    getInt()    const{ int res; lock(); res=_val; unlock(); return res; };
-    virtual double getDouble() const { return (double)getInt(); };
-    virtual int   get() const { return getInt(); };
+    virtual int    getInt()    const{ int res; lock(); res=_val; unlock(); return res; }
+    virtual double getDouble() const { return (double)getInt(); }
+    virtual int   get() const { return getInt(); }
   
-    virtual bool   getBool()  const { return (getInt() == 1 ? true : false); };
+    virtual bool   getBool()  const { return (getInt() == 1 ? true : false); }
   
-    virtual bool setString(const string & val) { int num=0; sscanf(val.c_str(),"%d",&num); return setInt(num); };
-    virtual bool setDouble(double val) { return setInt((int)val);  };
-    virtual bool setBool(bool val)     { return setInt(val ? 1 : 0);  };
+    virtual bool setString(const string & val) { int num=0; sscanf(val.c_str(),"%d",&num); return setInt(num); }
+    virtual bool setDouble(double val) { return setInt((int)val);  }
+    virtual bool setBool(bool val)     { return setInt(val ? 1 : 0);  }
   
     //plotting functions:
     virtual bool hasValue() const { return true; }

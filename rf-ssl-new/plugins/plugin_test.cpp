@@ -146,6 +146,12 @@ void testPlugin::mousePressEvent(QMouseEvent *event, pixelloc loc)
 
 ProcessResult testPlugin::process(FrameData * data, RenderOptions * options)
 {
+    if (data == NULL)
+    {
+        qDebug("testPlugin::process(): called with NULL data");
+        return ProcessingFailed;
+    }
+
     source = &(data->video);
     rgb *        source_pointer = (rgb*)(source->getData());
     //TO DO: ???????? ??????????? ????? ?????????? ? ???? ???
@@ -2001,9 +2007,21 @@ void imageProcessing::getNewData(std::deque<RobotFeatures> *blueTeam, std::deque
 
 void imageProcessing::calibrate(ImageInterface* source, deque<Scalar> blue, deque<Scalar> yellow, deque<Scalar> pink, deque<Scalar> green, deque<Scalar> orange)
 {
+    if (source == NULL)
+    {
+        qDebug("imageProcessing::calibrate(): called with NULL source");
+        return;
+    }
+
     this -> source = source;
     source_pointer = (rgb*)(source->getData());
-    int width = source -> getWidth();
+    if (source_pointer == NULL)
+    {
+        qDebug("imageProcessing::calibrate(): called with NULL source_pointer");
+        return;
+    }
+
+    int width  = source -> getWidth();
     int height = source -> getHeight();
     Mat img=Mat::zeros(height, width,CV_8UC3);
     uchar* mat = img.data;
@@ -2072,12 +2090,15 @@ void imageProcessing::getStartData(ImageInterface* source, deque<Scalar> blue, d
     imageBuffer = Mat::zeros(height, width,CV_8UC3);
     uchar* mat = imageBuffer.data;
     for (int i=0;i<height;++i)
-        for (int j=0;j<width;++j)
+    {
+//        uchar* line = &mat[3*(i*width)];
+        for (int j = 0;j < width;++j)
         {
             mat[3*(i*width+j)+2]=source_pointer[i*width+j].r;
             mat[3*(i*width+j)+1]=source_pointer[i*width+j].g;
             mat[3*(i*width+j)+0]=source_pointer[i*width+j].b;
         }
+    }
     int* colors = new int[height * width];
     for (int i=top;i<bottom;++i)
         for (int j=left;j<right;++j)

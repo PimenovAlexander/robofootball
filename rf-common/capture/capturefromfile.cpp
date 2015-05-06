@@ -229,7 +229,7 @@ RawImage CaptureFromFile::getFrame()
   }
   if (rgba_img == 0)
   {
-    fprintf (stderr, "CaptureFromFile Error, no images available");
+    fprintf (stderr, "CaptureFromFile::getFrame(): Error, no images available\n");
     is_capturing=false;
     result.setData(0);
     result.setWidth(640);
