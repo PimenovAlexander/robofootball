@@ -47,7 +47,7 @@ win32 {
 
 
   #OPENCV_PATH = $$(OPENCV_PATH)
-    OPENCV_PATH = C:\opencv
+    OPENCV_PATH = c:\opencv
 
   !isEmpty(OPENCV_PATH){
     message(Compiling with OpenCV in $$(OPENCV_PATH))
@@ -138,4 +138,5 @@ PRECOMPILED_HEADER = stable.h
 include ( rf-ssl.sources.pro.inc )
 
 DEPENDPATH = INCLUDEPATH
-
+QMAKE_CXXFLAGS+= -openmp
+QMAKE_LFLAGS +=  -openmp
